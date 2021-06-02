@@ -5,8 +5,8 @@ const quotes = require("./quotes.json");
 
 app.get("/quotes/:id", function (request, response) {
   //'/quotes/17 should return one quote, by id'
-  const index = parseInt(request.params.id) - 1;
-  response.send(quotes[index]);
+  const id = parseInt(request.params.id);
+  response.send(quotes[id]);
 });
 
 app.get("/quotes", function (request, response) {

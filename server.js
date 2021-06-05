@@ -37,32 +37,31 @@ app.post("/quotes", (req, res) => {
 
 app.put("/quotes/:id", (req, res) => {
   //Get the modified quote object
+  const index = parseInt(req.params.id);
   const modifiedQuoteObj = {
     quote: req.query.quote,
     author: req.query.author,
-    id: parseInt(req.params.id),
+    id: index,
   };
-  //Find the ID of the quote to be modified
-  // const changeThisQuote = quotes.find((q) => {
-  //   console.log(q);
-  //   return q.id == 10;
-  // });
-  const index = parseInt(req.params.id);
-  const filteredQuote = quotes.find((q) => q.id == index);
+  //Find the quote that has the matching ID called in the URL. Identify the index
+  const findQuoteIndexByID = quotes.findIndex((q) => q.id == index);
 
   //Replace the old quote using its ID/index with the new one
-  // quotes.splice(changeThisQuote, 1, modifiedQuoteObj);
-  res.send(filteredQuote);
+  quotes.splice(findQuoteIndexByID, 1, modifiedQuoteObj);
+
+  //Return modified quote
+  console.log(quotes);
+  res.send(quotes[findQuoteIndexByID]);
 });
 
 // DELETE - Change a quote API server to allow updating a quote according to the given ID.
 app.delete("/quotes/:id", (req, res) => {
   //Find the quote that has the matching ID called in the URL. Identify the index
   const id = parseInt(req.params.id);
-  const findQuotebyID = quotes.findIndex((q) => q.id == id);
-  console.log(findQuotebyID);
+  const findQuoteIndexByID = quotes.findIndex((q) => q.id == id);
+  console.log(findQuoteIndexByID);
   //Delete the quote from the array by index
-  quotes.splice(findQuotebyID, 1);
+  quotes.splice(findQuoteIndexByID, 1);
   //Return the array without the quote (console) and a success message
   console.log(quotes);
   res.status(200).send(`Your quote ${id} has been successfully deleted`);

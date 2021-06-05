@@ -33,4 +33,39 @@ app.post("/quotes", (req, res) => {
   res.status(201).send(quotes.slice(quotes.length - 3));
 });
 
+//PUT - Change the quote API server to allow updating a quote according to the given ID.The route should use the HTTP method PUT and ID should be given in the URL structure
+
+app.put("/quotes/:id", (req, res) => {
+  //Get the modified quote object
+  const modifiedQuoteObj = {
+    quote: req.query.quote,
+    author: req.query.author,
+    id: parseInt(req.params.id),
+  };
+  //Find the ID of the quote to be modified
+  // const changeThisQuote = quotes.find((q) => {
+  //   console.log(q);
+  //   return q.id == 10;
+  // });
+  const index = parseInt(req.params.id);
+  const filteredQuote = quotes.find((q) => q.id == index);
+
+  //Replace the old quote using its ID/index with the new one
+  // quotes.splice(changeThisQuote, 1, modifiedQuoteObj);
+  res.send(filteredQuote);
+});
+
+// DELETE - Change a quote API server to allow updating a quote according to the given ID.
+app.delete("/quotes/:id", (req, res) => {
+  //Find the quote that has the matching ID called in the URL. Identify the index
+  const id = parseInt(req.params.id);
+  const findQuotebyID = quotes.findIndex((q) => q.id == id);
+  console.log(findQuotebyID);
+  //Delete the quote from the array by index
+  quotes.splice(findQuotebyID, 1);
+  //Return the array without the quote (console) and a success message
+  console.log(quotes);
+  res.status(200).send(`Your quote ${id} has been successfully deleted`);
+});
+
 app.listen(3000, () => console.log("Listening on port 3000"));
